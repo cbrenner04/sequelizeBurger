@@ -3,11 +3,17 @@ var express = require('express');
 var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
+var db = require('./models');
 
 // set up server
 var app = express();
 var port = process.env.PORT || 3000;
-app.listen(port);
+
+db.sequelize.sync().then(function() {
+    app.listen(port, function() {
+        console.log('listening on ' + port);
+    });
+});
 
 // set up handlebars engine
 app.engine('handlebars', exphbs({
