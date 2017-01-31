@@ -1,12 +1,13 @@
 // require express and the burgers model
-var db = require('../models').Burger;
+var db = require('../models');
+var Burger = db.Burger;
 
 // export the routes
 module.exports = function(app) {
     // get the root route
     app.get('/', function(request, response) {
         var object = {};
-        db.findAll({
+        Burger.findAll({
             where: {
                 devoured: false
             }
@@ -14,7 +15,7 @@ module.exports = function(app) {
             object.uneatenBurgers = result;
             return;
         }).then(function() {
-          return db.findAll({
+          return Burger.findAll({
               where: {
                   devoured: true
               }
@@ -32,7 +33,7 @@ module.exports = function(app) {
 
     // define the get api/burgers route - for all burger data
     app.get('/api/burgers', function(request, response) {
-        db.findAll({}).then(function(result) {
+        Burger.findAll({}).then(function(result) {
             response.json(result);
         });
     });
@@ -46,7 +47,7 @@ module.exports = function(app) {
             return;
         }
         // create that burger
-        db.create({
+        Burger.create({
             burger_name: newBurger
         }).then(function() {
             response.redirect('/');
@@ -55,7 +56,7 @@ module.exports = function(app) {
 
     // define the get api/burgers/:id route - for single burger data
     app.get('/api/burgers/:id', function(request, response) {
-        db.findOne({
+        Burger.findOne({
             where: {
                 id: request.params.id
             }
@@ -66,7 +67,7 @@ module.exports = function(app) {
 
     // define put for updating a burger
     app.put('/:id', function(request, response) {
-        db.update({
+        Burger.update({
             devoured: true
         }, {
             where: {
