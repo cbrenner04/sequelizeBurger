@@ -14,6 +14,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: false
         }
+    },{
+        classMethods: {
+            associate: function(models) {
+                Burger.belongsTo(models.Customer);
+            }
+        }
     });
     return Burger;
 };
